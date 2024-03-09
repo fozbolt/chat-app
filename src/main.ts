@@ -3,10 +3,10 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as portfinder from 'portfinder';
 
-dotenv.config();
+dotenv.config(); //different than in app module
 
 async function bootstrap() {
-    const desiredPort = parseInt(process.env.PORT) || 3001; //add in configKeys?
+    const desiredPort = parseInt(process.env.NEST_PORT) || 3001; //add in configKeys?
 
     try {
         const port = await portfinder.getPortPromise({ port: desiredPort });

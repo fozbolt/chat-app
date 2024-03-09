@@ -24,16 +24,8 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
-TODO: listener port in .env or ConfigKeys
+TODO: 
+- rmq
+- elastic
+- graylog
