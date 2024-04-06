@@ -8,8 +8,8 @@ import {
     Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/createUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Controller('user')
 export class UserController {
@@ -21,6 +21,7 @@ export class UserController {
     }
 
     @Get()
+    //dodati tu i dolje onda read dto?
     findAll() {
         return this.userService.findAll();
     }

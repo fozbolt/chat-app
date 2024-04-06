@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/createUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,12 +8,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(User) // od kud i sto je ovo? pogledati neka detaljnija objasnjenja da razumijem
+        @InjectRepository(User)
         private readonly userRepository: Repository<User>,
     ) {}
 
     create(createUserDto: CreateUserDto) {
-        return 'This action adds a new user';
+        //how come i dont need async-await and how come theres no error
+        try {
+            this.userRepository.create(createUserDto);
+        } catch (err) {
+            console.error(err);
+            return 'not created';
+        }
+        return 'created';
     }
 
     findAll() {

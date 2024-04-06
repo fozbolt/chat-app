@@ -6,7 +6,8 @@ import * as portfinder from 'portfinder';
 dotenv.config(); //different than in app module
 
 async function bootstrap() {
-    const desiredPort = parseInt(process.env.NEST_PORT) || 3001; //add in configKeys?
+    const nestPortString = process.env.NEST_PORT;
+    const desiredPort = nestPortString ? parseInt(nestPortString) : 3001;
 
     try {
         const port = await portfinder.getPortPromise({ port: desiredPort });
