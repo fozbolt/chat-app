@@ -16,7 +16,7 @@ module.exports ={
         node: true,
         jest: true,
     },
-    ignorePatterns: ['.eslintrc.config.js'],
+    ignorePatterns: ['.eslintrc.js'],
     rules: {
         '@typescript-eslint/no-misused-promises': [
             2,

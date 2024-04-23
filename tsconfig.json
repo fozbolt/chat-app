@@ -2,11 +2,10 @@
   "compilerOptions": {
     "baseUrl": "./",
     "incremental": true,
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": [
-      "dom",
-      "ESNext"
+    "target": "ES2021",
+    "module": "commonjs",
+    "libs": [
+      "es2019"
     ],
     "allowJs": true,
     "outDir": "./dist",
@@ -17,7 +16,6 @@
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
-    "moduleResolution": "node",
     "paths": {
       "@root/*": [
         "*"
@@ -34,7 +32,7 @@
   ],
   "include": [
     "./src/**/*",
-    ".eslintrc.config.js",
+    ".eslintrc",
     ".prettierrc.js"
   ],
   "plugins": [
@@ -42,9 +40,4 @@
       "name": "typescript-tslint-plugin"
     }
   ],
-  "ts-node": {
-    "transpileOnly": true,
-    "files": true,
-    "experimentalResolver": true,
-  }
 }
