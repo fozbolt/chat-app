@@ -1,21 +1,50 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": [
+      "dom",
+      "ESNext"
+    ],
+    "allowJs": true,
+    "outDir": "./dist",
+    "isolatedModules": true,
+    "strict": true,
     "noImplicitAny": true,
-    "strictBindCallApply": false,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noUnusedLocals": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@root/*": [
+        "*"
+      ]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": [
+    "node_modules",
+    "./js-util-scripts/**/*"
+  ],
+  "include": [
+    "./src/**/*",
+    ".eslintrc.config.js",
+    ".prettierrc.js"
+  ],
+  "plugins": [
+    {
+      "name": "typescript-tslint-plugin"
+    }
+  ],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "experimentalResolver": true,
   }
 }

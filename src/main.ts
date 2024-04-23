@@ -1,17 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
-import * as portfinder from 'portfinder';
+import { ValidationPipe } from '@nestjs/common';
 
-dotenv.config(); //different than in app module
+dotenv.config();
 
 async function bootstrap() {
-    const nestPortString = process.env.NEST_PORT;
-    const desiredPort = nestPortString ? parseInt(nestPortString) : 3001;
+    const port = process.env.NEST_PORT || 3001;
 
     try {
-        const port = await portfinder.getPortPromise({ port: desiredPort });
         const app = await NestFactory.create(AppModule);
+        app.useGlobalPipes(new ValidationPipe());
+
         await app.listen(port);
         console.log(`Application is running on port ${port}`);
     } catch (err) {

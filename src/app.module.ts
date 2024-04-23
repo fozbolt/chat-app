@@ -3,11 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configDotenv } from 'dotenv';
-import { MessageModule } from './message/message.module';
-import { UserModule } from './user/user.module';
-import { CountryModule } from './country/country.module';
-import { RoomModule } from './room/room.module';
-import { RoomUserModule } from './room-user/roomUser.module';
+import { MessageModule } from './backend/message/message.module';
+import { UserModule } from './backend/user/user.module';
+import { CountryModule } from './backend/country/country.module';
+import { RoomModule } from './backend/room/room.module';
+import { RoomUserModule } from './backend/roomUser/roomUser.module';
 
 configDotenv();
 
