@@ -1,13 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    OneToOne,
-    JoinColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Room } from '../../room/entities/room.entity';
 import { ApprovalStatus } from '../enums/roomUsers.enum';
@@ -43,7 +34,10 @@ export class RoomUser {
     @Column({ name: 'left_at', nullable: true })
     leftAt: Date;
 
-    @CreateDateColumn({ name: 'requested_at', default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn({
+        name: 'created_at',
+        default: () => 'CURRENT_TIMESTAMP',
+    })
     requestedAt: Date;
 
     @Column({ name: 'hash', unique: true })

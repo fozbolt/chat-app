@@ -7,16 +7,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
-    constructor(
+    // TODO: ovo bi vec napravilo problem na AMS gdje bi trebalo puno stvari promijeniti (obavezan access modifier")
+    private constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
     ) {}
 
-    async addUser(createUserDto: CreateUserDto) {
+    private async addUser(createUserDto: CreateUserDto) {
         //how come i dont need async-await-> because its fast as its local?
         try {
             await this.userRepository.save(createUserDto);
-        } catch (err: any) {
+        } catch (err) {
             // Check if the error is due to unique username constraint
             if (err.code === 'ER_DUP_ENTRY') {
                 return 'Username already exists';
@@ -26,21 +27,24 @@ export class UserService {
         return 'created';
     }
 
-    async getUsers() {
-        return await this.userRepository.find();
+    private async getUsers() {
+        return this.userRepository.find();
     }
 
-    async getUser(userId: User['userId']) {
+    private async getUser(userId: User['userId']) {
         //add checks or messages if not found and security
         const user = await this.userRepository.findOneBy({ userId });
         return user;
     }
 
-    updateUser(id: number, updateUserDto: UpdateUserDto) {
+    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+    private updateUser(id: number, updateUserDto: UpdateUserDto) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const dummyVarToSkipEslint = updateUserDto;
         return `This action updates a #${id} user`;
     }
 
-    deleteUser(id: number) {
+    private deleteUser(id: number) {
         return `This action removes a #${id} user`;
     }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CountryService } from './country.service';
 import { CreateCountryDto } from './dto/createCountry.dto';
 import { UpdateCountryDto } from './dto/updateCountry.dto';
@@ -9,26 +9,26 @@ export class CountryController {
 
     @Post('add-country')
     async addCountryAction(@Body() createCountryDto: CreateCountryDto) {
-        return await this.countryService.addCountry(createCountryDto);
+        return this.countryService.addCountry(createCountryDto);
     }
 
     @Get('get-countries')
     async getCountriesAction() {
-        return await this.countryService.getCountries();
+        return this.countryService.getCountries();
     }
 
     @Get('get-country/:id')
     async getCountryAction(@Param('id') id: string) {
-        return await this.countryService.getCountry(+id);
+        return this.countryService.getCountry(+id);
     }
 
     @Patch('updateRoom-country/:id')
     async updateCountryAction(@Param('id') id: string, @Body() updateCountryDto: UpdateCountryDto) {
-        return await this.countryService.updateCountry(+id, updateCountryDto);
+        return this.countryService.updateCountry(+id, updateCountryDto);
     }
 
     @Delete('delete-country/:id')
     async deleteCountryAction(@Param('id') id: string) {
-        return await this.countryService.deleteCountry(+id);
+        return this.countryService.deleteCountry(+id);
     }
 }

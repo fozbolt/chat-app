@@ -3,8 +3,8 @@ import { MessageService } from './message.service';
 import { MessageController } from './message.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
-import { RoomUser } from '../roomUser/entities/roomUser.entity';
-import { RoomUserService } from '../roomUser/roomUser.service';
+// import { RoomUser } from '../roomUser/entities/roomUser.entity';
+// import { RoomUserService } from '../roomUser/roomUser.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Message])],

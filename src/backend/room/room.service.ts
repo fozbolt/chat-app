@@ -13,11 +13,11 @@ export class RoomService {
     ) {}
 
     async addRoom(createRoomDto: CreateRoomDto) {
-        return await this.roomRepository.save(createRoomDto);
+        return this.roomRepository.save(createRoomDto);
     }
 
     async getRooms() {
-        return await this.roomRepository.find();
+        return this.roomRepository.find();
     }
 
     getRoom(id: number) {

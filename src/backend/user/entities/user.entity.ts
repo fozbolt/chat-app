@@ -1,12 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToMany,
-    OneToOne,
-    CreateDateColumn,
-    UpdateDateColumn, Unique,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 import { Message } from '../../message/entities/message.entity';
 import { RoomUser } from '../../roomUser/entities/roomUser.entity';
 

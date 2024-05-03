@@ -21,14 +21,14 @@ export class MessageService {
     async addRoomMessage(createMessageDto: CreateMessageDto, roomId: number) {
         // ili je bolje ovo napraviti vec u room kontroleru?
         //add safety
-        return await this.messageRepository.save({
+        return this.messageRepository.save({
             room: { roomId },
             user: { userId: createMessageDto.userId },
             ...createMessageDto,
         });
     }
 
-    async getRoomMessages(roomId: string): Promise<Message[]> {
+    async getRoomMessages(roomId: string): Promise<Array<Message>> {
         const roomIdParsed = parseInt(roomId);
         const messages = await this.messageRepository.find({
             where: { roomId: roomIdParsed },
@@ -47,8 +47,10 @@ export class MessageService {
      * @param roomId
      * @param userId
      */
-    async getRoomMessagesAfterJoin(roomId: number, userId: number): Promise<Message[]> {
-        this.roomUserService = this.moduleRef.get(RoomUserService, { strict: false });
+    async getRoomMessagesAfterJoin(roomId: number, userId: number): Promise<Array<Message>> {
+        this.roomUserService = this.moduleRef.get(RoomUserService, {
+            strict: false,
+        });
 
         const roomUser = await this.roomUserService.getRoomUserByUserId(roomId, userId);
 
@@ -70,14 +72,14 @@ export class MessageService {
     }
 
     async getMessage(id: number) {
-        return await `This action returns a #${id} message`;
+        return `This action returns a #${id} message`;
     }
 
     async updateMessage(id: number, updateMessageDto: UpdateMessageDto) {
-        return await `This action updates a #${id} message`;
+        return `This action updates a #${id} message`;
     }
 
     async deleteMessage(id: number) {
-        return await `This action removes a #${id} message`;
+        return `This action removes a #${id} message`;
     }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { UpdateMessageDto } from './dto/updateMessage.dto';
 
@@ -9,16 +9,16 @@ export class MessageController {
     // operations for messages are only called from room and roomUser currently
     @Get('get-message/:id')
     async getMessageAction(@Param('id') id: string) {
-        return await this.messageService.getMessage(+id);
+        return this.messageService.getMessage(+id);
     }
 
     @Patch('updateMessage-message/:id')
     async updateMessageAction(@Param('id') id: string, @Body() updateMessageDto: UpdateMessageDto) {
-        return await this.messageService.updateMessage(+id, updateMessageDto);
+        return this.messageService.updateMessage(+id, updateMessageDto);
     }
 
     @Delete('delete-message/:id')
     async deleteMessageAction(@Param('id') id: string) {
-        return await this.messageService.deleteMessage(+id);
+        return this.messageService.deleteMessage(+id);
     }
 }

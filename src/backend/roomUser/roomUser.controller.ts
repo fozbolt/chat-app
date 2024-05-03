@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { RoomUserService } from './roomUser.service';
 import { CreateRoomUserDto } from './dto/createRoomUser.dto';
 import { UpdateRoomUserDto } from './dto/updateRoomUser.dto';
@@ -13,26 +13,20 @@ export class RoomUserController {
      * @param createRoomUserDto
      */
     @Post('add-room-user/:roomId')
-    addRoomUserAction(@Body() createRoomUserDto: CreateRoomUserDto) {
+    async addRoomUserAction(@Body() createRoomUserDto: CreateRoomUserDto) {
         return this.roomUserService.addRoomUser(createRoomUserDto);
     }
 
     @Get('get-approved-room-users/room/:roomId') //TODO: or is it better for the routes to be of shape ':roomId/users' to be more clear?
-    getApprovedRoomUsersAction(@Param('roomId') roomId: number) {
+    async getApprovedRoomUsersAction(@Param('roomId') roomId: number) {
         return this.roomUserService.getApprovedRoomUsers(roomId);
     }
 
     @Get('get-room-user/:id')
-    getRoomUserAction(@Param('id') id: string) {
-        return;
-    }
+    getRoomUserAction(@Param('id') id: string) {}
 
     @Patch('update-room-user/room/:roomId/user/:userId') // ili mozda hash?
-    updateRoomUserAction(
-        @Param('roomId') roomId: number,
-        @Param('userId') userId: number,
-        @Body() updateRoomUserDto: UpdateRoomUserDto,
-    ) {
+    async updateRoomUserAction(@Param('roomId') roomId: number, @Param('userId') userId: number, @Body() updateRoomUserDto: UpdateRoomUserDto) {
         return this.roomUserService.updateRoomUser(roomId, userId, updateRoomUserDto);
     }
 

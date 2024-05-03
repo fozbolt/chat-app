@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsString, IsOptional, Length, IsDate, isDate} from 'class-validator';
+import { IsDate, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateCountryDto {
     @IsOptional()

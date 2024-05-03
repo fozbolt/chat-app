@@ -6,16 +6,47 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "allowUnreachableCode": false,
+    "esModuleInterop": true,
+    "noImplicitThis": true,
+    // "libs": ["es2019"], ovo vj vise nije potrenbo nigdje -> redundant -> we have "target" -> remove from AMS also
     "skipLibCheck": true,
     "strictNullChecks": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    // full riskantno sigurno je kod pun ovog
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": true,
+    "alwaysStrict": true,
+    "noUnusedParameters": true,
+    "paths": {
+      "@root/*": [
+        "src/*"
+      ]
+    }
+    //useDefineForClassFields:true // ovo zakomoentirano na AMS, ovo ni nebi ja
+    // noImplicitReturns: true //i ovo -> vj bi triggeralo previse legacy codea sve ovo
+    // noUnusedLocals: true // i ovo -> ovo vec imam u @ts..eslint
+  },
+  "watchOptions": {
+    "excludeDirectories": [
+      "**/node_modules",
+      "./dist"
+    ]
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  // AMS ima svoju
+  "exclude": [
+    "node_modules",
+    ".eslintrc.js",
+    ".prettierrc.js",
+    "dist" // ?
+  ]
 }
