@@ -16,7 +16,7 @@ const dbPortString = process.env.DB_PORT;
 const dbPort = dbPortString ? parseInt(dbPortString) : undefined;
 
 @Module({
-    //sve ovo u .env i paziti sto stavljam jer smo to imali diskuiju
+    //paziti sto stavljam sve u .envjer smo to imali diskuiju
     // move connection to separate folder
     imports: [
         TypeOrmModule.forRoot({

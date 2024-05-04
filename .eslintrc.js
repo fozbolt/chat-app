@@ -1,5 +1,5 @@
 /**
- * NOTE: implementation is still in progress, hence a lot of comments
+ * NOTE: this is considered as a playground for implementing the same rules on AMS, hence a lot of comments related to AMS
  * Kada cu dodavati pravila, ne kompirati cijeli file jer se nece vidjeti izmmjene, zamijeniti postojeca i na kraju dodati nova!, isto za tsconfig i prettier
  * provjeriti jos jednom da nisam koje u bilo kojem fileu izostavio
  * unutar grupacija, poredati abecedno? vj ne zbog onih s dodatnim opcijama

@@ -8,7 +8,7 @@ dotenv.config();
 
 async function bootstrap(): Promise<void> {
     const fallbackPort = 3001;
-    const port = process.env.NEST_PORT || fallbackPort;
+    const port = parseInt(process.env.NEST_PORT) || fallbackPort;
 
     try {
         const app = await NestFactory.create(AppModule);
