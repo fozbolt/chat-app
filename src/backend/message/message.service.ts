@@ -1,34 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMessageDto } from './dto/createMessage.dto';
-import { UpdateMessageDto } from './dto/updateMessage.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Message } from './entities/message.entity';
-import { MoreThan, Repository } from 'typeorm';
-import { RoomUserService } from '../roomUser/roomUser.service';
 import { ModuleRef } from '@nestjs/core';
+import { InjectRepository } from '@nestjs/typeorm';
+import { MoreThan, Repository } from 'typeorm';
+
+import { RoomUserService } from '../roomUser/roomUser.service';
+import { CreateMessageDto } from './dto/createMessage.dto';
+import { Message } from './entities/message.entity';
 
 @Injectable()
 export class MessageService {
     private roomUserService: RoomUserService;
 
-    constructor(
+    public constructor(
         @InjectRepository(Message)
         private readonly messageRepository: Repository<Message>,
         // private readonly roomUserService: RoomUserService, // circ dep issue
         private readonly moduleRef: ModuleRef,
     ) {}
 
-    async addRoomMessage(createMessageDto: CreateMessageDto, roomId: number) {
-        // ili je bolje ovo napraviti vec u room kontroleru?
-        //add safety
-        return this.messageRepository.save({
-            room: { roomId },
-            user: { userId: createMessageDto.userId },
-            ...createMessageDto,
-        });
-    }
-
-    async getRoomMessages(roomId: string): Promise<Array<Message>> {
+    public async getRoomMessages(roomId: string): Promise<Array<Message>> {
         const roomIdParsed = parseInt(roomId);
         const messages = await this.messageRepository.find({
             where: { roomId: roomIdParsed },
@@ -42,12 +32,22 @@ export class MessageService {
         return messages;
     }
 
+    public async addRoomMessage(createMessageDto: CreateMessageDto, roomId: number): Promise<unknown> {
+        // ili je bolje ovo napraviti vec u room kontroleru?
+        //add safety
+        return await this.messageRepository.save({
+            room: { roomId },
+            user: { userId: createMessageDto.userId },
+            ...createMessageDto,
+        });
+    }
+
     /**
      *
      * @param roomId
      * @param userId
      */
-    async getRoomMessagesAfterJoin(roomId: number, userId: number): Promise<Array<Message>> {
+    public async getRoomMessagesAfterJoin(roomId: number, userId: number): Promise<Array<Message>> {
         this.roomUserService = this.moduleRef.get(RoomUserService, {
             strict: false,
         });
@@ -71,15 +71,16 @@ export class MessageService {
         return messages;
     }
 
-    async getMessage(id: number) {
-        return `This action returns a #${id} message`;
-    }
-
-    async updateMessage(id: number, updateMessageDto: UpdateMessageDto) {
-        return `This action updates a #${id} message`;
-    }
-
-    async deleteMessage(id: number) {
-        return `This action removes a #${id} message`;
-    }
+    //TODO
+    // async getMessage(id: number) {
+    //     return `This action returns a #${id} message`;
+    // }
+    //
+    // async updateMessage(id: number, updateMessageDto: UpdateMessageDto) {
+    //     return `This action updates a #${id} message`;
+    // }
+    //
+    // async deleteMessage(id: number) {
+    //     return `This action removes a #${id} message`;
+    // }
 }

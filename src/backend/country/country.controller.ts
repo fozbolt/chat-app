@@ -1,34 +1,36 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Country } from '@root/backend/country/entities/country.entity';
+
 import { CountryService } from './country.service';
 import { CreateCountryDto } from './dto/createCountry.dto';
-import { UpdateCountryDto } from './dto/updateCountry.dto';
 
 @Controller('country')
 export class CountryController {
-    constructor(private readonly countryService: CountryService) {}
+    public constructor(private readonly countryService: CountryService) {}
 
     @Post('add-country')
-    async addCountryAction(@Body() createCountryDto: CreateCountryDto) {
-        return this.countryService.addCountry(createCountryDto);
+    public async addCountryAction(@Body() createCountryDto: CreateCountryDto): Promise<{ data: CreateCountryDto; message: string; status: number }> {
+        return await this.countryService.addCountry(createCountryDto);
     }
 
     @Get('get-countries')
-    async getCountriesAction() {
-        return this.countryService.getCountries();
+    public async getCountriesAction(): Promise<Array<Country>> {
+        return await this.countryService.getCountries();
     }
 
-    @Get('get-country/:id')
-    async getCountryAction(@Param('id') id: string) {
-        return this.countryService.getCountry(+id);
-    }
-
-    @Patch('updateRoom-country/:id')
-    async updateCountryAction(@Param('id') id: string, @Body() updateCountryDto: UpdateCountryDto) {
-        return this.countryService.updateCountry(+id, updateCountryDto);
-    }
-
-    @Delete('delete-country/:id')
-    async deleteCountryAction(@Param('id') id: string) {
-        return this.countryService.deleteCountry(+id);
-    }
+    // TODO
+    // @Get('get-country/:id')
+    // public async getCountryAction(@Param('id') id: string) {
+    //     return this.countryService.getCountry(+id);
+    // }
+    //
+    // @Patch('updateRoom-country/:id')
+    // public async updateCountryAction(@Param('id') id: string, @Body() updateCountryDto: UpdateCountryDto) {
+    //     return this.countryService.updateCountry(+id, updateCountryDto);
+    // }
+    //
+    // @Delete('delete-country/:id')
+    // public  async deleteCountryAction(@Param('id') id: string) {
+    //     return this.countryService.deleteCountry(+id);
+    // }
 }

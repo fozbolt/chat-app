@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { RoomUserService } from './roomUser.service';
-import { RoomUserController } from './roomUser.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RoomUser } from './entities/roomUser.entity';
+
+import { User } from '../user/entities/user.entity';
 // import { MessageService } from '../message/message.service';
 // import { Message } from '../message/entities/message.entity';
 import { UserService } from '../user/user.service';
-import { User } from '../user/entities/user.entity';
+import { RoomUser } from './entities/roomUser.entity';
+import { RoomUserController } from './roomUser.controller';
+import { RoomUserService } from './roomUser.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([RoomUser, User])],
     controllers: [RoomUserController],
+    imports: [TypeOrmModule.forFeature([RoomUser, User])],
     providers: [RoomUserService, UserService],
 
     // circ dep issue

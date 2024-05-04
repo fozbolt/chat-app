@@ -1,12 +1,14 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import * as dotenv from 'dotenv';
+
+import { AppModule } from './app.module';
 
 dotenv.config();
 
-async function bootstrap() {
-    const port = process.env.NEST_PORT || 3001;
+async function bootstrap(): Promise<void> {
+    const fallbackPort = 3001;
+    const port = process.env.NEST_PORT || fallbackPort;
 
     try {
         const app = await NestFactory.create(AppModule);

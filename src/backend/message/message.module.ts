@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MessageService } from './message.service';
-import { MessageController } from './message.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { Message } from './entities/message.entity';
+import { MessageController } from './message.controller';
+import { MessageService } from './message.service';
 // import { RoomUser } from '../roomUser/entities/roomUser.entity';
 // import { RoomUserService } from '../roomUser/roomUser.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Message])],
     controllers: [MessageController],
+    imports: [TypeOrmModule.forFeature([Message])],
     providers: [MessageService],
 
     //removed because of circular dependency

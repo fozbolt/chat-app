@@ -1,34 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoomDto } from './dto/createRoom.dto';
-import { UpdateRoomDto } from './dto/updateRoom.dto';
-import { Repository } from 'typeorm';
-import { Room } from './entities/room.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { CreateRoomDto } from './dto/createRoom.dto';
+import { Room } from './entities/room.entity';
 
 @Injectable()
 export class RoomService {
-    constructor(
+    public constructor(
         @InjectRepository(Room)
         private readonly roomRepository: Repository<Room>,
     ) {}
 
-    async addRoom(createRoomDto: CreateRoomDto) {
-        return this.roomRepository.save(createRoomDto);
+    public async addRoom(createRoomDto: CreateRoomDto): Promise<CreateRoomDto> {
+        return await this.roomRepository.save(createRoomDto);
     }
 
-    async getRooms() {
-        return this.roomRepository.find();
+    public async getRooms(): Promise<Array<Room>> {
+        return await this.roomRepository.find();
     }
 
-    getRoom(id: number) {
-        return `This action returns a #${id} room`;
-    }
-
-    updateRoom(id: number, updateRoomDto: UpdateRoomDto) {
-        return `This action updates a #${id} room`;
-    }
-
-    deleteRoom(id: number) {
-        return `This action removes a #${id} room`;
-    }
+    // TODO
+    // getRoom(id: number) {
+    //     return `This action returns a #${id} room`;
+    // }
+    //
+    // updateRoom(id: number, updateRoomDto: UpdateRoomDto) {
+    //     return `This action updates a #${id} room`;
+    // }
+    //
+    // deleteRoom(id: number) {
+    //     return `This action removes a #${id} room`;
+    // }
 }

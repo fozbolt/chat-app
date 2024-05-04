@@ -1,36 +1,38 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { UserService } from './user.service';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { User } from '@root/backend/user/entities/user.entity';
+
 import { CreateUserDto } from './dto/createUser.dto';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    public constructor(private readonly userService: UserService) {}
 
     @Post('add-user')
-    async addUserAction(@Body() createUserDto: CreateUserDto) {
-        return this.userService.addUser(createUserDto);
+    public async addUserAction(@Body() createUserDto: CreateUserDto): Promise<string> {
+        return await this.userService.addUser(createUserDto);
     }
 
     @Get('get-users')
     //dodati tu i dolje onda read dto?
-    async getUsersAction() {
-        return this.userService.getUsers();
+    public async getUsersAction(): Promise<Array<User>> {
+        return await this.userService.getUsers();
     }
 
     // these are not implemented yet
     @Get('getUser/:userId')
-    async getUserAction(@Param('userId') userId: number) {
-        return this.userService.getUser(userId);
+    public async getUserAction(@Param('userId') userId: number): Promise<User> {
+        return await this.userService.getUser(userId);
     }
 
-    @Patch('updateRoomUser/user:id')
-    async updateUserAction(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.updateUser(+id, updateUserDto);
-    }
-
-    @Delete('delete/:id')
-    async deleteUserAction(@Param('id') id: string) {
-        return this.userService.deleteUser(+id);
-    }
+    // TODO
+    // @Patch('updateRoomUser/user:id')
+    // public async updateUserAction(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<string> {
+    //     return this.userService.updateUser(+id, updateUserDto);
+    // }
+    //
+    // @Delete('delete/:id')
+    // public async deleteUserAction(@Param('id') id: string): Promise<string> {
+    //     return this.userService.deleteUser(+id);
+    // }
 }

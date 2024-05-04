@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/createUser.dto';
-import { UpdateUserDto } from './dto/updateUser.dto';
-import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { CreateUserDto } from './dto/createUser.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
     // TODO: ovo bi vec napravilo problem na AMS gdje bi trebalo puno stvari promijeniti (obavezan access modifier")
-    private constructor(
+    public constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
     ) {}
 
-    private async addUser(createUserDto: CreateUserDto) {
+    public async addUser(createUserDto: CreateUserDto): Promise<string> {
         //how come i dont need async-await-> because its fast as its local?
         try {
             await this.userRepository.save(createUserDto);
@@ -27,24 +27,22 @@ export class UserService {
         return 'created';
     }
 
-    private async getUsers() {
-        return this.userRepository.find();
+    public async getUsers(): Promise<Array<User>> {
+        return await this.userRepository.find();
     }
 
-    private async getUser(userId: User['userId']) {
+    public async getUser(userId: User['userId']): Promise<User> {
         //add checks or messages if not found and security
-        const user = await this.userRepository.findOneBy({ userId });
-        return user;
+        return await this.userRepository.findOneBy({ userId });
     }
 
-    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-    private updateUser(id: number, updateUserDto: UpdateUserDto) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const dummyVarToSkipEslint = updateUserDto;
-        return `This action updates a #${id} user`;
-    }
-
-    private deleteUser(id: number) {
-        return `This action removes a #${id} user`;
-    }
+    // TODO
+    // public updateUser(id: number, updateUserDto: UpdateUserDto): string {
+    //     const dummyVarToSkipEslint = updateUserDto;
+    //     return `This action updates a #${id} user`;
+    // }
+    //
+    // public deleteUser(id: number): string {
+    //     return `This action removes a #${id} user`;
+    // }
 }

@@ -10,8 +10,9 @@ module.exports = {
     project: 'tsconfig.json',
     tsconfigRootDir: __dirname,
     sourceType: 'module',
+    ecmaVersion: 'latest', //diskutabilno
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort'],
   extends: [
     'eslint:recommended', //AMS doesnt use any of this recommended esllint rules -> ili ne ovo koristiti jer ce biti konflikata? B2b ga koristi
     'plugin:@typescript-eslint/recommended',
@@ -23,22 +24,22 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js', '.prettierrc.js'], //promijeniti u ovo i na AMS
+  ignorePatterns: ['.eslintrc.js', '.prettierrc.js', '*.dto.js', '*.dto.ts', '*.entity.ts', '*.entity.js', 'app.e2e-spec.ts'], //promijeniti u ovo i na AMS prva dva, ostaatak je diskutabilan, ali previsse kompliciraju stvari za dto i entitete
   rules: {
     // eslint rules (AMS) + eslint:recommended overrides
     'no-console': 'warn', // tako ima i AMS, diskutablino, vj pustiti tako radi svih loggera koje imamo
     'no-unexpected-multiline': 'error', // AMs ima na warn -> ne treba jer je na error u eslint recommended
     'prefer-arrow-callback': 'error', // Requires arrow function callbacks instead of anonymous function expressions -> questionable for AMS - search code -> also on few places
     'func-names': ['error', 'always'], // Requires function names -> questionable for AMS - search code -> we have singletos, do not implement this?
-    'unused-imports/no-unused-imports': 'error', //AMS ima na warn
+    // 'unused-imports/no-unused-imports': 'error', //AMS ima na warn //isto deprecated, naci zamjenu
     'prefer-template': 'error', //AMS ima na warn
     'eqeqeq': 'warn', //Kao AMS,
-    'simple-import-sort/imports': 'warn', // kao AMS, prodiskutirati -> nisam siguran da li ova dva rulesa jos postoje
-    'simple-import-sort/exports': 'warn', //kao AMS
+    // 'simple-import-sort/imports': 'warn', // kao AMS, prodiskutirati -> nisam siguran da li ova dva rulesa jos postoje //deprecated? ne mogu ga naci, zamijenio sa sort-imports kao i ovaj ispod
+    // 'simple-import-sort/exports': 'warn', //kao AMS //deprecated? ne mogu ga naci
     'no-param-reassign': 'warn', //kao AMS
     'no-unsafe-optional-chaining': 'warn', //nema AMS, error mozda pre strogo s obzoirom da nemamo '| undefined' u interfaceima
-    // quotes -> AMS ima, ali je to deprecated
-    // 'quote-props': ['warn', 'as-needed', { numbers: false }], //AMS ima, ali je deprecated
+    // quotes -> AMS ima, ali je to deprecated, dodano u prettier
+    // 'quote-props': ['warn', 'as-needed', { numbers: false }], //AMS ima, ali je deprecated, prettier ima
     // 'object-curly-newline' //AMS ima, ali je deprecated
     // space-before-function-paren // //AMS ima, ali je deprecated -> traziti alternative za te stvari
     // 'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }], // DEPRECATED -> tako ima AMS -> zamijeniti s prettier? ili typescript-eslint
@@ -56,7 +57,7 @@ module.exports = {
     'default-case-last': 'error',
     'dot-notation': 'warn',
     'max-lines': ['warn', { 'max': 1000 }], //enlarge if necessary
-    'new-cap': 'error',
+    // 'new-cap': 'error', // nije pogodno za dekoratore
     'no-eq-null': 'error', // na AMS mozda warn
     'no-extra-label': 'error',
     'no-invalid-this': 'error',
@@ -65,9 +66,10 @@ module.exports = {
     'no-var': 'error',
     'prefer-const': 'error',
     'require-await': 'error',
-    'sort-imports': 'warn',
-    'sort-keys': 'warn',
+    // 'sort-keys': 'warn', //boring, complains in modules and everything, sometimes messes the custom structure
     'yoda': 'error',
+    'simple-import-sort/imports': 'warn',
+    'simple-import-sort/exports': 'warn',
 
     // eslint -> @typescript-eslint rules overrides
     'no-shadow': 'off',
@@ -76,8 +78,6 @@ module.exports = {
     '@typescript-eslint/no-magic-numbers': 'error',
     'no-throw-literal': 'off',
     '@typescript-eslint/only-throw-error': 'error', //za mene ok, ali AMS je mozda prevelik projekt i bilo bi previse konflikata
-    'no-return-await': 'off',
-    '@typescript-eslint/return-await': 'error',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error', // AMS ima na warn, testirati, ali vj je previse error
     'no-unused-vars': 'off',
@@ -93,7 +93,7 @@ module.exports = {
     'default-param-last': 'off',
     '@typescript-eslint/default-param-last': 'error',
     'init-declarations': 'off',
-    '@typescript-eslint/init-declarations': 'error',
+    '@typescript-eslint/init-declarations': 'warn', // AMS bi bilo previse promjena da ima ovo, za moj projekt bi islo i na error, ali mozda naporno i nepotrebno
 
     // @typescript-eslint rules
     '@typescript-eslint/no-misused-promises': 'error',
@@ -117,7 +117,6 @@ module.exports = {
     '@typescript-eslint/no-for-in-array': 'error',
     '@typescript-eslint/prefer-find': 'error',
     '@typescript-eslint/prefer-string-starts-ends-with': 'error', // ovo bi isto izazvalo velike promjene i da li je prikladno za zamjeniti sve slucajeve
-    '@typescript-eslint/prefer-readonly-parameter-types': 'error', // korisno ali jako diskutabilno, trebalo bi milijun promjena
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error', //ovo bi znalo izazivati probleme posvugdje
     '@typescript-eslint/prefer-includes': 'error',
@@ -186,10 +185,10 @@ module.exports = {
       'error',
       {
         'default': [
+          'field',
           'signature',
           'constructor',
           'method',
-          'field',
         ],
       },
     ],

@@ -1,21 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+import { InjectRepository } from '@nestjs/typeorm';
+import crypto from 'crypto';
+import { Repository } from 'typeorm';
+
+import { CreateMessageDto } from '../message/dto/createMessage.dto';
+import { MessageService } from '../message/message.service';
+import { Room } from '../room/entities/room.entity';
+import { User } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
 import { CreateRoomUserDto } from './dto/createRoomUser.dto';
 import { UpdateRoomUserDto } from './dto/updateRoomUser.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { RoomUser } from './entities/roomUser.entity';
 import { ApprovalStatus } from './enums/roomUsers.enum';
-import { User } from '../user/entities/user.entity';
-import { Room } from '../room/entities/room.entity';
-import { MessageService } from '../message/message.service';
-import { CreateMessageDto } from '../message/dto/createMessage.dto';
-import { UserService } from '../user/user.service';
-import { ModuleRef } from '@nestjs/core';
-import crypto from 'crypto';
 
 @Injectable()
 export class RoomUserService {
-    constructor(
+    public constructor(
         @InjectRepository(RoomUser)
         private readonly roomUserRepository: Repository<RoomUser>,
         // private readonly messageService: MessageService, // circ dep issue
@@ -27,9 +28,20 @@ export class RoomUserService {
      * add function return type
      * @param createRoomUserDto
      */
-    async addRoomUser(createRoomUserDto: CreateRoomUserDto) {
+    public async addRoomUser(createRoomUserDto: CreateRoomUserDto): Promise<
+        | string
+        | {
+              roomUserHash: string;
+              roomUsers: Array<RoomUser>;
+          }
+    > {
         let newRoomUser: RoomUser;
-        let joinResponse;
+        let joinResponse:
+            | string
+            | {
+                  roomUserHash: string;
+                  roomUsers: Array<RoomUser>;
+              }; //add interface or improve logic
 
         // TODO
         //ovo ne radi jer je u db user_id i room_id null
@@ -37,9 +49,10 @@ export class RoomUserService {
 
         if (!requestAlreadySent) {
             //probably not needed since possibility is low
-            let hashUnique = false;
+            let isHashUnique = false;
 
             do {
+                // eslint-disable-next-line @typescript-eslint/no-magic-numbers
                 const randomString = Math.random().toString(36).substring(2);
                 const hash = crypto.createHash('sha256').update(randomString).digest('hex');
                 const roomUser = await this.getRoomUserByHash(hash, createRoomUserDto.roomId);
@@ -64,12 +77,12 @@ export class RoomUserService {
                             roomUsers: approvedRoomUsers,
                         };
 
-                        hashUnique = true;
+                        isHashUnique = true;
                     } catch (e) {
                         return e.message;
                     }
                 }
-            } while (!hashUnique);
+            } while (!isHashUnique);
         } else {
             // add better logs, separate each case
             // currently for statuses approved, pending and forbidden
@@ -83,7 +96,7 @@ export class RoomUserService {
      * gets approved room users only
      * @param roomId
      */
-    async getApprovedRoomUsers(roomId: Room['roomId']): Promise<Array<RoomUser>> {
+    public async getApprovedRoomUsers(roomId: Room['roomId']): Promise<Array<RoomUser>> {
         const approvedUsers = await this.roomUserRepository.find({
             where: { approvalStatus: ApprovalStatus.APPROVED, room: { roomId } },
         });
@@ -91,8 +104,8 @@ export class RoomUserService {
         return approvedUsers;
     }
 
-    async getRoomUserByUserId(roomId: Room['roomId'], userId: User['userId']): Promise<RoomUser | null> {
-        return this.roomUserRepository.findOne({
+    public async getRoomUserByUserId(roomId: Room['roomId'], userId: User['userId']): Promise<RoomUser | null> {
+        return await this.roomUserRepository.findOne({
             where: {
                 user: { userId },
                 room: { roomId },
@@ -100,8 +113,8 @@ export class RoomUserService {
         });
     }
 
-    async getRoomUserByHash(hash: RoomUser['hash'], roomId: Room['roomId']): Promise<RoomUser | null> {
-        return this.roomUserRepository.findOneBy({
+    public async getRoomUserByHash(hash: RoomUser['hash'], roomId: Room['roomId']): Promise<RoomUser | null> {
+        return await this.roomUserRepository.findOneBy({
             hash: hash,
             room: { roomId },
         });
@@ -111,12 +124,12 @@ export class RoomUserService {
      * Probao nesto genericnog ali neide
      * @param userParamObj
      */
-    async findRoomUser(userParamObj: Partial<RoomUser>): Promise<RoomUser | null> {
-        return this.roomUserRepository.findOne({ where: userParamObj });
+    public async findRoomUser(userParamObj: Partial<RoomUser>): Promise<RoomUser | null> {
+        return await this.roomUserRepository.findOne({ where: userParamObj });
     }
 
     //TODO: all this should be a transaction or join message in queue or sth
-    async updateRoomUser(roomId: number, userId: number, updateRoomUserDto: UpdateRoomUserDto) {
+    public async updateRoomUser(roomId: number, userId: number, updateRoomUserDto: UpdateRoomUserDto): Promise<RoomUser> {
         try {
             const roomUser = await this.getRoomUserByUserId(roomId, userId);
 
@@ -182,7 +195,7 @@ export class RoomUserService {
         }
     }
 
-    deleteRoomUser(id: number) {
-        return `This action removes a #${id} roomUser`;
+    public async deleteRoomUser(id: number): Promise<string> {
+        return await `This action removes a #${id} roomUser`;
     }
 }
