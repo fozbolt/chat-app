@@ -12,6 +12,13 @@ async function bootstrap(): Promise<void> {
 
     try {
         const app = await NestFactory.create(AppModule);
+
+        app.enableCors({
+            origin: 'http://will-be-added.com',
+            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            credentials: true,
+        });
+
         app.useGlobalPipes(new ValidationPipe());
 
         await app.listen(port);

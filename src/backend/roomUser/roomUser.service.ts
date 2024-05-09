@@ -195,7 +195,7 @@ export class RoomUserService {
         }
     }
 
-    public async deleteRoomUser(id: number): Promise<string> {
+    async deleteRoomUser(id: number): Promise<string> {
         return await `This action removes a #${id} roomUser`;
     }
 }

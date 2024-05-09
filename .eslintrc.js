@@ -1,8 +1,7 @@
 /**
  * NOTE: this is considered as a playground for implementing the same rules on AMS, hence a lot of comments related to AMS
- * Kada cu dodavati pravila, ne kompirati cijeli file jer se nece vidjeti izmmjene, zamijeniti postojeca i na kraju dodati nova!, isto za tsconfig i prettier
+ * Kada cu dodavati pravila, ne kopirati cijeli file jer se nece vidjeti izmmjene, zamijeniti postojeca i na kraju dodati nova!, isto za tsconfig i prettier
  * provjeriti jos jednom da nisam koje u bilo kojem fileu izostavio
- * unutar grupacija, poredati abecedno? vj ne zbog onih s dodatnim opcijama
  */
 module.exports = {
   parser: '@typescript-eslint/parser',
@@ -31,16 +30,16 @@ module.exports = {
     'no-unexpected-multiline': 'error', // AMs ima na warn -> ne treba jer je na error u eslint recommended
     'prefer-arrow-callback': 'error', // Requires arrow function callbacks instead of anonymous function expressions -> questionable for AMS - search code -> also on few places
     'func-names': ['error', 'always'], // Requires function names -> questionable for AMS - search code -> we have singletos, do not implement this?
-    // 'unused-imports/no-unused-imports': 'error', //AMS ima na warn //isto deprecated, naci zamjenu
+    // 'unused-imports/no-unused-imports': 'error', //AMS ima na warn //isto deprecated, naci zamjenu -> nasao eslint-plugin-simple-import-sort plugin
     'prefer-template': 'error', //AMS ima na warn
     'eqeqeq': 'warn', //Kao AMS,
-    // 'simple-import-sort/imports': 'warn', // kao AMS, prodiskutirati -> nisam siguran da li ova dva rulesa jos postoje //deprecated? ne mogu ga naci, zamijenio sa sort-imports kao i ovaj ispod
+    // 'simple-import-sort/imports': 'warn', // kao AMS, prodiskutirati -> nisam siguran da li ova dva rulesa jos postoje dodao plugin za ovo
     // 'simple-import-sort/exports': 'warn', //kao AMS //deprecated? ne mogu ga naci
     'no-param-reassign': 'warn', //kao AMS
     'no-unsafe-optional-chaining': 'warn', //nema AMS, error mozda pre strogo s obzoirom da nemamo '| undefined' u interfaceima
     // quotes -> AMS ima, ali je to deprecated, dodano u prettier
     // 'quote-props': ['warn', 'as-needed', { numbers: false }], //AMS ima, ali je deprecated, prettier ima
-    // 'object-curly-newline' //AMS ima, ali je deprecated
+    // 'object-curly-newline' //AMS ima, ali je deprecated ( ne obnavlja se, ali radi) -> naci slicno od prettiera?
     // space-before-function-paren // //AMS ima, ali je deprecated -> traziti alternative za te stvari
     // 'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }], // DEPRECATED -> tako ima AMS -> zamijeniti s prettier? ili typescript-eslint
     // 'comma-dangle': 'off', //deprecated, remove from AMS
