@@ -4,7 +4,7 @@ end_of_line = lf
 indent_size = 4
 indent_style = space
 insert_final_newline = false
-max_line_length = 240
+max_line_length = 160
 tab_width = 4
 ij_continuation_indent_size = 8
 ij_formatter_off_tag = @formatter:off
@@ -155,7 +155,7 @@ ij_xml_space_inside_empty_tag = false
 ij_xml_text_wrap = normal
 
 [{*.ats,*.cts,*.mts,*.ts}]
-max_line_length = 160
+max_line_length = 120
 ij_continuation_indent_size = 4
 ij_visual_guides = 80
 ij_typescript_align_imports = false
@@ -192,7 +192,7 @@ ij_typescript_call_parameters_right_paren_on_new_line = false
 ij_typescript_call_parameters_wrap = off
 ij_typescript_catch_on_new_line = false
 ij_typescript_chained_call_dot_on_new_line = true
-ij_typescript_class_brace_style = end_of_line
+ij_typescript_class_brace_style = next_line_if_wrapped
 ij_typescript_comma_on_new_line = false
 ij_typescript_do_while_brace_force = always
 ij_typescript_else_on_new_line = false
@@ -341,7 +341,7 @@ ij_shell_switch_cases_indented = false
 ij_shell_use_unix_line_separator = true
 
 [{*.cjs,*.js}]
-max_line_length = 160
+max_line_length = 120
 ij_continuation_indent_size = 4
 ij_visual_guides = 80
 ij_javascript_align_imports = false
