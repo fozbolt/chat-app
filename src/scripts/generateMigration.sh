@@ -1,8 +1,9 @@
 #!/bin/bash
 
 migration_name=$1
-config_path="./src/config//typeorm/typeorm.config.ts"
+migration_dir="src/database/mariadb/migrations/$migration_name"
+config_path="dist/config/typeorm/typeorm.config.js"
 
-npx typeorm migration:generate $migration_name -d $config_path
+npx typeorm migration:generate $migration_dir -d $config_path
 
-# run: ➜ npm run migration:generate  migrationName
+# run: ➜ npm run migration:generate MigrationName

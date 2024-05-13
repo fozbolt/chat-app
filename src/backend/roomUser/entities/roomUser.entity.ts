@@ -1,6 +1,15 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { User } from '../../user/entities/user.entity';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+
 import { Room } from '../../room/entities/room.entity';
+import { User } from '../../user/entities/user.entity';
 import { ApprovalStatus } from '../enums/roomUsers.enum';
 
 @Entity()
@@ -24,7 +33,7 @@ export class RoomUser {
     })
     approvalStatus: ApprovalStatus;
 
-    @UpdateDateColumn({ name: 'updated_at' })
+    @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
     updatedAt: Date;
 
     @ManyToOne(() => User, { nullable: true })
@@ -38,7 +47,7 @@ export class RoomUser {
         name: 'created_at',
         default: () => 'CURRENT_TIMESTAMP',
     })
-    requestedAt: Date;
+    createdAt: Date;
 
     @Column({ name: 'hash', unique: true })
     hash: string;

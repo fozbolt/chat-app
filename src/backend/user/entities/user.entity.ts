@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
+
 import { Message } from '../../message/entities/message.entity';
 import { RoomUser } from '../../roomUser/entities/roomUser.entity';
 
@@ -26,7 +27,7 @@ export class User {
     @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
-    @Column({ name: 'last_active_at' })
+    @UpdateDateColumn({ name: 'last_active_at', default: () => 'CURRENT_TIMESTAMP' })
     lastActiveAt: Date; //TODO update when user logs in? not the best estimation, but easy to implement -> wait for websockets
 
     @Column({ name: 'role_id' })

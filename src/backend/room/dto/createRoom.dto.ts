@@ -7,11 +7,11 @@ export class CreateRoomDto {
 
     @IsInt()
     @IsOptional()
-    isPrivate: number;
+    isPrivate = 0;
 
     @IsInt()
     @IsOptional()
-    isDeleted: number;
+    isDeleted = 0;
 
     @IsInt()
     @IsOptional()
