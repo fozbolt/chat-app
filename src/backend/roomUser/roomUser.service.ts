@@ -86,7 +86,7 @@ export class RoomUserService {
         } else {
             // add better logs, separate each case
             // currently for statuses approved, pending and forbidden
-            joinResponse = `Your request is already in status: ${requestAlreadySent.approvalStatus.toUpperCase()}`;
+            joinResponse = `Your room join request is already in status: ${requestAlreadySent.approvalStatus.toUpperCase()}`;
         }
 
         return joinResponse;
@@ -129,7 +129,11 @@ export class RoomUserService {
     }
 
     //TODO: all this should be a transaction or join message in queue or sth
-    public async updateRoomUser(roomId: number, userId: number, updateRoomUserDto: UpdateRoomUserDto): Promise<RoomUser> {
+    public async updateRoomUser(
+        roomId: number,
+        userId: number,
+        updateRoomUserDto: UpdateRoomUserDto,
+    ): Promise<RoomUser> {
         try {
             const roomUser = await this.getRoomUserByUserId(roomId, userId);
 
@@ -139,13 +143,12 @@ export class RoomUserService {
             if (roomUser.approvalStatus === updateRoomUserDto.approvalStatus) {
                 throw new Error('Selected approval status cannot be the same as the current one');
             }
-            if (!updateRoomUserDto.approvalStatus || !updateRoomUserDto.updatedBy || !updateRoomUserDto.updatedAt) {
+            if (!updateRoomUserDto.approvalStatus || !updateRoomUserDto.updatedBy) {
                 throw new Error('Missing required fields while updating room user');
             }
 
             roomUser.approvalStatus = updateRoomUserDto.approvalStatus;
             roomUser.updatedBy = updateRoomUserDto.updatedBy;
-            roomUser.updatedAt = updateRoomUserDto.updatedAt;
 
             //TODO  ovo poboljsati kasnije
             //TODO replace throws with console logs?
@@ -191,11 +194,11 @@ export class RoomUserService {
             return await this.roomUserRepository.save(roomUser);
         } catch (error) {
             console.error('Error while updating room user:', error);
-            throw new Error('Failed to updateCountry room user');
+            throw new Error('Failed to updateCountry room user'); //update country??
         }
     }
 
-    public async deleteRoomUser(id: number): Promise<string> {
+    async deleteRoomUser(id: number): Promise<string> {
         return await `This action removes a #${id} roomUser`;
     }
 }

@@ -1,17 +1,6 @@
+// other options are removed from explicit assignment since they are used by default
 module.exports = {
-  arrowParens: 'always',
-  bracketSameLine: false,
-  bracketSpacing: true,
-  embeddedLanguageFormatting: 'auto',
-  htmlWhitespaceSensitivity: 'css',
-  insertPragma: false,
-  jsxSingleQuote: true,
-  printWidth: 160,
-  proseWrap: 'preserve',
-  quoteProps: 'as-needed',
-  semi: true,
-  singleQuote: true,
-  tabWidth: 4,
-  trailingComma: 'all',
-  useTabs: false,
+    printWidth: 120,
+    singleQuote: true,
+    tabWidth: 4,
 };

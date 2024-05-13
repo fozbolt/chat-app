@@ -17,7 +17,7 @@ export class CreateUserDto {
     readonly username: string;
 
     @IsOptional()
-    readonly isDeleted: number;
+    readonly isDeleted = 0;
 
     @IsOptional()
     @IsDate()
@@ -27,7 +27,7 @@ export class CreateUserDto {
     @IsDate()
     readonly updatedAt: Date;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsDate()
     readonly lastActiveAt: Date;
 
