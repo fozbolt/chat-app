@@ -20,9 +20,9 @@ export class UserController {
     }
 
     // these are not implemented yet
-    @Get('getUser/:userId')
+    @Get('getUserById/:userId')
     public async getUserAction(@Param('userId') userId: number): Promise<User> {
-        return await this.userService.getUser(userId);
+        return await this.userService.getUserById(userId);
     }
 
     // TODO

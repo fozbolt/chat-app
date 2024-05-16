@@ -4,53 +4,53 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     @MaxLength(100)
-    readonly firstName: string;
+    firstName: string;
 
     @IsString()
     @IsNotEmpty()
     @MaxLength(100)
-    readonly lastName: string;
+    lastName: string;
 
     @IsString()
     @IsNotEmpty()
     @MaxLength(30)
-    readonly username: string;
+    username: string;
 
     @IsOptional()
-    readonly isDeleted = 0;
-
-    @IsOptional()
-    @IsDate()
-    readonly createdAt: Date;
+    isDeleted = 0;
 
     @IsOptional()
     @IsDate()
-    readonly updatedAt: Date;
+    createdAt: Date;
 
     @IsOptional()
     @IsDate()
-    readonly lastActiveAt: Date;
+    updatedAt: Date;
+
+    @IsOptional()
+    @IsDate()
+    lastActiveAt: Date;
 
     @IsInt()
     @IsNotEmpty()
-    readonly roleId: number;
+    roleId: number;
 
     @IsEmail()
     @IsNotEmpty()
     @MaxLength(200)
-    readonly email: string;
+    email: string;
 
     @IsString()
     @IsNotEmpty()
     @MaxLength(255)
-    readonly password: string;
+    password: string;
 
     @IsString()
     @IsNotEmpty()
     @MaxLength(40)
-    readonly phoneNumber: string;
+    phoneNumber: string;
 
     @IsInt()
     @IsNotEmpty()
-    readonly countryId: number;
+    countryId: number;
 }

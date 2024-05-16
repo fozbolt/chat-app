@@ -15,7 +15,7 @@ async function bootstrap(): Promise<void> {
 
         app.enableCors({
             origin: 'http://will-be-added.com',
-            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            methods: '*',
             credentials: true,
         });
 

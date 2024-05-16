@@ -5,10 +5,10 @@ Content-Type: application/json
 {
 "firstName": "yo",
 "lastName": "Doe",
-"username": "johndoe123",
+"username": "testUser1234",
 "roleId": 1,
 "email": "johndoe@example.com",
-"password": "password123",
+"password": "RealFilip33!",
 "phoneNumber": "+1234567890",
 "countryId": 123
 }
@@ -81,3 +81,12 @@ Content-Type: application/json
 
 ### GET ALL ROOM MESSAGES AFTER SPECIFIC USER JOIN
 GET {{hostUrl}}/room/get-room-messages-after-join/room/1/user/1
+
+### LOGIN
+POST {{hostUrl}}/auth/login
+Content-Type: application/json
+
+{
+"username": "testUser1234",
+"password": "RealFilip33!"
+}

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '@root/backend/auth/auth.module';
 import { typeormConfig } from '@root/config/typeorm/typeorm.config';
 
 import { AppController } from './app.controller';
@@ -20,6 +21,7 @@ import { UserModule } from './backend/user/user.module';
         RoomModule,
         MessageModule,
         RoomUserModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],

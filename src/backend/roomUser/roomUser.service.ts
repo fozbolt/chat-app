@@ -161,8 +161,8 @@ export class RoomUserService {
                 messageText: '',
             };
 
-            const approvedUser = await this.userService.getUser(userId);
-            // const approvedUser: User = await this.userService.getUser(userId); // ili ovako? sto forceati
+            const approvedUser = await this.userService.getUserById(userId);
+            // const approvedUser: User = await this.userService.getUserById(userId); // ili ovako? sto forceati
 
             try {
                 if (approvedUser) {
