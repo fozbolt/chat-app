@@ -70,7 +70,7 @@ GET {{hostUrl}}/room/get-room-messages/1
 GET {{hostUrl}}/roomUser/get-approved-room-users/room/1
 
 ### APPROVE/LEAVE ROOM - B5
-### updatedBy must differ from user being update
+### updatedBy must differ from user being updated
 PATCH {{hostUrl}}/roomUser/update-room-user/room/1/user/1
 Content-Type: application/json
 
@@ -90,3 +90,7 @@ Content-Type: application/json
 "username": "testUser1234",
 "password": "RealFilip33!"
 }
+
+### GET PROFILE (TEST PROTECTED ROUTE IF NOT LOGGED IN)
+GET {{hostUrl}}/profile
+Authorization: Bearer {{accessToken}}

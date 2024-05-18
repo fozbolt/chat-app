@@ -1,18 +1,30 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AppService } from '@root/app.service';
-import { LocalAuthGuard } from '@root/backend/auth/local-auth.guard';
+import { AuthService } from '@root/backend/auth/auth.service';
+import { JwtAuthGuard } from '@root/backend/auth/jwtAuthGuard';
+import { LocalAuthGuard } from '@root/backend/auth/localAuthGuard';
 import { User } from '@root/backend/user/entities/user.entity';
 
 @Controller()
 export class AppController {
-    public constructor(private readonly appService: AppService) {}
+    public constructor(
+        private readonly appService: AppService,
+        private readonly authService: AuthService,
+    ) {}
 
     @UseGuards(LocalAuthGuard)
     @Post('auth/login')
-    async login(@Request() req: { user: Omit<User, 'password'> }): Promise<string> {
-        const username = req?.user?.username;
+    async login(@Request() req: { user: Omit<User, 'password'> }): Promise<{ accessToken: string }> {
+        // const username = req?.user?.username;
+        // return this.appService.postLoginGreeting(username);
 
-        return this.appService.postLoginGreeting(username);
+        return this.authService.login(req.user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('profile')
+    getProfile(@Request() req: { user: Omit<User, 'password'> }): Omit<User, 'password'> {
+        return req.user;
     }
 
     @Get('/')
