@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@root/backend/auth/auth.module';
+import { JwtAuthGuard } from '@root/backend/auth/jwtAuth.guard';
 import { typeormConfig } from '@root/config/typeorm/typeorm.config';
 
 import { AppController } from './app.controller';
@@ -12,8 +14,6 @@ import { RoomUserModule } from './backend/roomUser/roomUser.module';
 import { UserModule } from './backend/user/user.module';
 
 @Module({
-    //paziti sto stavljam sve u .envjer smo to imali diskuiju
-    // move connection to separate folder
     imports: [
         TypeOrmModule.forRoot(typeormConfig),
         UserModule,
@@ -24,6 +24,12 @@ import { UserModule } from './backend/user/user.module';
         AuthModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard,
+        },
+        AppService,
+    ],
 })
 export class AppModule {}

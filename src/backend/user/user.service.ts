@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -26,12 +26,12 @@ export class UserService {
         try {
             await this.userRepository.save(createUserDto);
         } catch (err) {
-            // Check if the error is due to unique username constraint
             if (err.code === 'ER_DUP_ENTRY') {
-                return 'Username already exists';
+                throw new ConflictException('Username already exists');
             }
-            return 'Error while creating user';
+            throw new InternalServerErrorException('Error while creating user');
         }
+
         return 'created';
     }
 

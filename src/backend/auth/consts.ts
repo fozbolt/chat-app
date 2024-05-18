@@ -3,6 +3,8 @@ import { configDotenv } from 'dotenv';
 
 configDotenv();
 
-export const jwtConstants = {
+// TODO: separate this since these consts are for different purposes?
+export const authConsts = {
     secret: process.env.SECRET,
+    IS_PUBLIC: 'isPublic',
 };

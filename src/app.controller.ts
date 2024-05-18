@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AppService } from '@root/app.service';
+import { Public } from '@root/backend/auth/auth.helper';
 import { AuthService } from '@root/backend/auth/auth.service';
-import { JwtAuthGuard } from '@root/backend/auth/jwtAuthGuard';
-import { LocalAuthGuard } from '@root/backend/auth/localAuthGuard';
+import { LocalAuthGuard } from '@root/backend/auth/localAuth.guard';
 import { User } from '@root/backend/user/entities/user.entity';
 
 @Controller()
@@ -12,7 +12,8 @@ export class AppController {
         private readonly authService: AuthService,
     ) {}
 
-    @UseGuards(LocalAuthGuard)
+    @Public()
+    @UseGuards(LocalAuthGuard) // da li ovo sada jos trebam?
     @Post('auth/login')
     async login(@Request() req: { user: Omit<User, 'password'> }): Promise<{ accessToken: string }> {
         // const username = req?.user?.username;
@@ -21,11 +22,12 @@ export class AppController {
         return this.authService.login(req.user);
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    getProfile(@Request() req: { user: Omit<User, 'password'> }): Omit<User, 'password'> {
-        return req.user;
-    }
+    // ### deprecated -> now global auth guard is used
+    // @UseGuards(JwtAuthGuard)
+    // @Get('profile')
+    // getProfile(@Request() req: { user: Omit<User, 'password'> }): Omit<User, 'password'> {
+    //     return req.user;
+    // }
 
     @Get('/')
     public homepageGreeting(): string {

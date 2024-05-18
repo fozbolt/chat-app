@@ -1,3 +1,5 @@
+# all routes except adding user are protected, login first
+
 ### ADD USER
 POST {{hostUrl}}/user/add-user
 Content-Type: application/json
@@ -92,5 +94,5 @@ Content-Type: application/json
 }
 
 ### GET PROFILE (TEST PROTECTED ROUTE IF NOT LOGGED IN)
+### deprecated -> now global auth guard is used
 GET {{hostUrl}}/profile
-Authorization: Bearer {{accessToken}}
