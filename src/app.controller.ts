@@ -1,9 +1,6 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from '@root/app.service';
-import { Public } from '@root/backend/auth/auth.helper';
 import { AuthService } from '@root/backend/auth/auth.service';
-import { LocalAuthGuard } from '@root/backend/auth/localAuth.guard';
-import { User } from '@root/backend/user/entities/user.entity';
 
 @Controller()
 export class AppController {
@@ -11,16 +8,6 @@ export class AppController {
         private readonly appService: AppService,
         private readonly authService: AuthService,
     ) {}
-
-    @Public()
-    @UseGuards(LocalAuthGuard) // da li ovo sada jos trebam?
-    @Post('auth/login')
-    async login(@Request() req: { user: Omit<User, 'password'> }): Promise<{ accessToken: string }> {
-        // const username = req?.user?.username;
-        // return this.appService.postLoginGreeting(username);
-
-        return this.authService.login(req.user);
-    }
 
     // ### deprecated -> now global auth guard is used
     // @UseGuards(JwtAuthGuard)

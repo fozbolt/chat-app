@@ -18,13 +18,17 @@ Content-Type: application/json
 ### GET USERS
 GET {{hostUrl}}/user/get-users
 Accept: application/json
+Authorization: Bearer {{accessToken}}
 
 ### GET USER
-GET {{hostUrl}}/user/1
+# accessible only for admin (for test)
+GET {{hostUrl}}/user/getUserById/10
+Authorization: Bearer {{accessToken}}
 
 ### ADD COUNTRY
 POST {{hostUrl}}/country/add-country
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
 "name": "United States",
@@ -34,10 +38,12 @@ Content-Type: application/json
 
 ### GET COUNTRIES
 GET {{hostUrl}}/country/get-countries
+Authorization: Bearer {{accessToken}}
 
 ### ADD ROOM - B2, B6
 POST {{hostUrl}}/room/add-room
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
 "name": "testna 6",
@@ -46,10 +52,12 @@ Content-Type: application/json
 
 ### GET ROOMS - BASIC TASK 1 (B1)
 GET {{hostUrl}}/room/get-rooms
+Authorization: Bearer {{accessToken}}
 
 ### ROOM JOIN REQUEST - B3
 POST {{hostUrl}}/roomUser/add-room-user/1
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
 "userId": 1,
@@ -59,6 +67,7 @@ Content-Type: application/json
 ### SEND/ADD MESSAGE - B6
 POST {{hostUrl}}/room/add-room-message/1
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
 "userId": 1,
@@ -67,14 +76,17 @@ Content-Type: application/json
 
 ### GET ROOM MESSAGES - B4
 GET {{hostUrl}}/room/get-room-messages/1
+Authorization: Bearer {{accessToken}}
 
 ### GET APPROVED ROOM USERS
 GET {{hostUrl}}/roomUser/get-approved-room-users/room/1
+Authorization: Bearer {{accessToken}}
 
 ### APPROVE/LEAVE ROOM - B5
-### updatedBy must differ from user being updated
+# updatedBy must differ from user being updated
 PATCH {{hostUrl}}/roomUser/update-room-user/room/1/user/1
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
 "updatedBy": 6,
@@ -83,16 +95,23 @@ Content-Type: application/json
 
 ### GET ALL ROOM MESSAGES AFTER SPECIFIC USER JOIN
 GET {{hostUrl}}/room/get-room-messages-after-join/room/1/user/1
+Authorization: Bearer {{accessToken}}
 
 ### LOGIN
 POST {{hostUrl}}/auth/login
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
 "username": "testUser1234",
 "password": "RealFilip33!"
 }
 
+### LOGOUT
+POST {{hostUrl}}/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
 ### GET PROFILE (TEST PROTECTED ROUTE IF NOT LOGGED IN)
-### deprecated -> now global auth guard is used
+# deprecated -> now global auth guard is used
 GET {{hostUrl}}/profile

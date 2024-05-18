@@ -3,6 +3,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@root/backend/auth/auth.module';
 import { JwtAuthGuard } from '@root/backend/auth/jwtAuth.guard';
+import { RolesGuard } from '@root/backend/auth/roles.guard';
+import { CompositeGuard } from '@root/common/guards/composite.guard';
 import { typeormConfig } from '@root/config/typeorm/typeorm.config';
 
 import { AppController } from './app.controller';
@@ -27,8 +29,10 @@ import { UserModule } from './backend/user/user.module';
     providers: [
         {
             provide: APP_GUARD,
-            useClass: JwtAuthGuard,
+            useClass: CompositeGuard,
         },
+        RolesGuard,
+        JwtAuthGuard,
         AppService,
     ],
 })

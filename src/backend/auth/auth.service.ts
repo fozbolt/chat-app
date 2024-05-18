@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@root/backend/user/entities/user.entity';
 import { UserService } from '@root/backend/user/user.service';
@@ -24,10 +24,25 @@ export class AuthService {
         return null;
     }
 
-    public async login(user: any): Promise<{ accessToken: string }> {
-        const payload = { username: user.username, sub: user.userId };
+    public login(user: User): { accessToken: string } {
+        const payload = { password: user.password, ...user };
         return {
-            accessToken: await this.jwtService.sign(payload),
+            accessToken: this.jwtService.sign(payload),
         };
+    }
+
+    /**
+     * workarund for logout with refreshing token, returns new token, put it in private.env
+     * doesn't work since old token is still valid until it expires, maybe blacklist it
+     * @param {string} token
+     * @returns {Promise<string>}
+     */
+    public async logout(token: string): Promise<string> {
+        try {
+            const payload = await this.jwtService.verify(token);
+            return this.jwtService.sign({ userId: payload.userId });
+        } catch {
+            throw new UnauthorizedException('Invalid refresh token');
+        }
     }
 }
