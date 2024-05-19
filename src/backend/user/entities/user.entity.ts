@@ -1,3 +1,4 @@
+import { Room } from '@root/backend/room/entities/room.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 import { Message } from '../../message/entities/message.entity';
@@ -53,4 +54,7 @@ export class User {
 
     @OneToMany(() => RoomUser, (roomUser: RoomUser) => roomUser.user)
     updatedBy: Array<RoomUser>;
+
+    @OneToMany(() => Room, (room) => room.createdBy)
+    rooms: Array<Room>; // Representing one-to-many relationship
 }

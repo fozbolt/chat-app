@@ -46,8 +46,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-"name": "testna 6",
-"userId": 1
+"name": "testna 7"
 }
 
 ### GET ROOMS - BASIC TASK 1 (B1)
@@ -115,3 +114,10 @@ Authorization: Bearer {{accessToken}}
 ### GET PROFILE (TEST PROTECTED ROUTE IF NOT LOGGED IN)
 # deprecated -> now global auth guard is used
 GET {{hostUrl}}/profile
+
+### SENT ROOM JOIN INVITATION
+POST {{hostUrl}}/room/send-room-join-invitation
+
+{
+
+}

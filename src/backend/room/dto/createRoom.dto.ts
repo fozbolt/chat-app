@@ -1,3 +1,4 @@
+import { User } from '@root/backend/user/entities/user.entity';
 import { IsDate, IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateRoomDto {
@@ -14,8 +15,8 @@ export class CreateRoomDto {
     isDeleted = 0;
 
     @IsInt()
-    @IsOptional()
-    userId: number;
+    @IsOptional() // TODO: make this requred if it will be passed from request, leave as is if it will be taken from context
+    createdBy: User;
 
     @IsOptional()
     @IsDate()

@@ -32,7 +32,7 @@ export class UserService {
             throw new InternalServerErrorException('Error while creating user');
         }
 
-        return 'created';
+        return 'created ';
     }
 
     public async getUsers(): Promise<Array<User>> {
