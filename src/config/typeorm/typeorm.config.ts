@@ -9,7 +9,7 @@ const dbPort = dbPortString ? parseInt(dbPortString) : undefined;
 
 export const typeormConfig: TypeOrmModuleOptions = {
     type: 'mariadb',
-    database: process.env.DB_DATABASE_NAME,
+    database: process.env.DB_NAME,
     entities: ['dist/**/*.entity.js'], // https://stackoverflow.com/questions/59435293/typeorm-entity-in-nestjs-cannot-use-import-statement-outside-a-module
     host: process.env.DB_HOST,
     password: process.env.DB_PASSWORD,

@@ -3,6 +3,7 @@
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
 ## Installation
@@ -30,3 +31,16 @@ TODO:
 - elastic
 - graylog
 ...
+```
+
+## Setup (temporary solution, script will be upgraded)
+
+```
+# 1: sudo mariadb or mariadb
+# 2: GRANT ALL PRIVILEGES ON *.* TO 'filipozbolt'@'localhost' IDENTIFIED BY '123' WITH GRANT OPTION;
+# 3: FLUSH PRIVILEGES;
+# 4: chmod +x createDatabase.sh
+# 5: ./createDatabase.sh
+
+# run migration:run
+```
