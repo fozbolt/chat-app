@@ -22,7 +22,7 @@ Authorization: Bearer {{accessToken}}
 
 ### GET USER
 # accessible only for admin (for test)
-GET {{hostUrl}}/user/getUserById/10
+GET {{hostUrl}}/user/getUserById/2
 Authorization: Bearer {{accessToken}}
 
 ### ADD COUNTRY
