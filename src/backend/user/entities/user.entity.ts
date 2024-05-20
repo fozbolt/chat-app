@@ -52,7 +52,7 @@ export class User {
     @OneToMany(() => RoomUser, (roomUser: RoomUser) => roomUser.user)
     roomUser: Array<RoomUser>;
 
-    @OneToMany(() => RoomUser, (roomUser: RoomUser) => roomUser.user)
+    @OneToMany(() => RoomUser, (roomUser: RoomUser) => roomUser.updatedBy)
     updatedBy: Array<RoomUser>;
 
     @OneToMany(() => Room, (room) => room.createdBy)

@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AddRoomResult } from '@root/backend/room/interfaces/room.interface';
+import { CreateRoomUserDto } from '@root/backend/roomUser/dto/createRoomUser.dto';
+import { ApprovalStatus } from '@root/backend/roomUser/enums/roomUsers.enum';
+import { RoomUserService } from '@root/backend/roomUser/roomUser.service';
 import { UserService } from '@root/backend/user/user.service';
 import { Repository } from 'typeorm';
 
@@ -12,12 +16,16 @@ export class RoomService {
         @InjectRepository(Room)
         private readonly roomRepository: Repository<Room>,
         private readonly userService: UserService,
+        private readonly roomUserService: RoomUserService,
     ) {}
 
-    public async addRoom(createRoomDto: CreateRoomDto, userId: number): Promise<Room> {
+    public async addRoom(createRoomDto: CreateRoomDto, userId: number): Promise<AddRoomResult> {
         const user = await this.userService.getUserById(userId);
         if (!user) {
-            throw new Error('User not found');
+            return {
+                success: false,
+                message: 'User not found',
+            };
         }
 
         const room = this.roomRepository.create({
@@ -25,7 +33,34 @@ export class RoomService {
             createdBy: user,
         });
 
-        return await this.roomRepository.save(room);
+        try {
+            const savedRoom = await this.roomRepository.save(room);
+            const createRoomUserDto: CreateRoomUserDto = {
+                userId,
+                approvalStatus: ApprovalStatus.APPROVED,
+                roomId: savedRoom.roomId,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                updatedBy: null,
+                leftAt: null,
+                hash: null,
+            };
+
+            await this.roomUserService.addRoomUser(createRoomUserDto);
+
+            return {
+                success: true,
+                message: 'Room created successfully',
+                data: savedRoom,
+            };
+        } catch (error) {
+            console.error('Failed to create room:', error.message);
+
+            return {
+                success: false,
+                message: `Failed to create room: ${error.message}`,
+            };
+        }
     }
 
     public async getRooms(): Promise<Array<Room>> {

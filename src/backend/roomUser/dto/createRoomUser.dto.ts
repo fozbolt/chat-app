@@ -1,13 +1,13 @@
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsDate, IsEnum, IsNumber, IsOptional } from 'class-validator';
 
 import { User } from '../../user/entities/user.entity';
 import { ApprovalStatus } from '../enums/roomUsers.enum';
 
 export class CreateRoomUserDto {
-    @IsNotEmpty()
+    @IsOptional()
     userId: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     roomId: number;
 
     @IsEnum(ApprovalStatus)

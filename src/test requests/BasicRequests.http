@@ -1,4 +1,5 @@
 # all routes except adding user are protected, login first
+# only some routes are listed here
 
 ### ADD USER
 POST {{hostUrl}}/user/add-user
@@ -46,7 +47,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-"name": "testna 7"
+"name": "testna 5"
 }
 
 ### GET ROOMS - BASIC TASK 1 (B1)
@@ -54,13 +55,11 @@ GET {{hostUrl}}/room/get-rooms
 Authorization: Bearer {{accessToken}}
 
 ### ROOM JOIN REQUEST - B3
-POST {{hostUrl}}/roomUser/add-room-user/1
+POST {{hostUrl}}/roomUser/add-room-user/4
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-"userId": 1,
-"roomId": 1
 }
 
 ### SEND/ADD MESSAGE - B6
@@ -107,6 +106,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### LOGOUT
+# TODO: still in progress
 POST {{hostUrl}}/auth/logout
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}

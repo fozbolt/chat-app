@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserHashAndRoomUsersList } from '@root/backend/roomUser/interfaces/roomUser.interface';
 import crypto from 'crypto';
 import { Repository } from 'typeorm';
 
@@ -28,23 +29,10 @@ export class RoomUserService {
      * add function return type
      * @param createRoomUserDto
      */
-    public async addRoomUser(createRoomUserDto: CreateRoomUserDto): Promise<
-        | string
-        | {
-              roomUserHash: string;
-              roomUsers: Array<RoomUser>;
-          }
-    > {
+    public async addRoomUser(createRoomUserDto: CreateRoomUserDto): Promise<string | UserHashAndRoomUsersList> {
         let newRoomUser: RoomUser;
-        let joinResponse:
-            | string
-            | {
-                  roomUserHash: string;
-                  roomUsers: Array<RoomUser>;
-              }; //add interface or improve logic
+        let joinResponse: string | UserHashAndRoomUsersList;
 
-        // TODO
-        //ovo ne radi jer je u db user_id i room_id null
         const requestAlreadySent = await this.getRoomUserByUserId(createRoomUserDto.userId, createRoomUserDto.roomId);
 
         if (!requestAlreadySent) {
@@ -64,8 +52,8 @@ export class RoomUserService {
                         const { userId, roomId, ...rest } = createRoomUserDto;
 
                         newRoomUser = this.roomUserRepository.create({
-                            user: { userId: userId },
-                            room: { roomId: roomId },
+                            user: { userId },
+                            room: { roomId },
                             ...rest,
                         });
 
@@ -100,11 +88,11 @@ export class RoomUserService {
         const approvedUsers = await this.roomUserRepository.find({
             where: { approvalStatus: ApprovalStatus.APPROVED, room: { roomId } },
         });
-        //TODO: also return userId here to successfully identify user and use it in B5 or in general
         return approvedUsers;
     }
 
     public async getRoomUserByUserId(roomId: Room['roomId'], userId: User['userId']): Promise<RoomUser | null> {
+        // TODO trenutno ne radi
         return await this.roomUserRepository.findOne({
             where: {
                 user: { userId },

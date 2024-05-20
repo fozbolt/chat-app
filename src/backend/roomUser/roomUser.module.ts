@@ -13,8 +13,8 @@ import { RoomUserService } from './roomUser.service';
     controllers: [RoomUserController],
     imports: [TypeOrmModule.forFeature([RoomUser, User])],
     providers: [RoomUserService, UserService],
-
-    // circ dep issue
+    exports: [RoomUserService],
+    // circ dep issue test case
     // imports: [TypeOrmModule.forFeature([RoomUser, Message, User])],
     // controllers: [RoomUserController],
     // providers: [RoomUserService, MessageService, UserService],

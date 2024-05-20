@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { Message } from '@root/backend/message/entities/message.entity';
 import { Room } from '@root/backend/room/entities/room.entity';
+import { AddRoomResult } from '@root/backend/room/interfaces/room.interface';
 
 import { CreateMessageDto } from '../message/dto/createMessage.dto';
 import { MessageService } from '../message/message.service';
@@ -50,8 +51,8 @@ export class RoomController {
         @Body() createRoomDto: CreateRoomDto,
         @Req()
         req: { user: { userId: number } },
-    ): Promise<CreateRoomDto> {
-        const userId = req.user.userId; // Extracted from JWT and set in the request by the guard
+    ): Promise<AddRoomResult> {
+        const userId = req.user.userId;
         return await this.roomService.addRoom(createRoomDto, userId);
     }
 
