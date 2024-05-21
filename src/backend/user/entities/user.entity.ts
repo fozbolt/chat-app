@@ -1,4 +1,5 @@
 import { Room } from '@root/backend/room/entities/room.entity';
+import { UserNotification } from '@root/backend/userNotifications/entities/userNotification.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 import { Message } from '../../message/entities/message.entity';
@@ -56,5 +57,11 @@ export class User {
     updatedBy: Array<RoomUser>;
 
     @OneToMany(() => Room, (room) => room.createdBy)
-    rooms: Array<Room>; // Representing one-to-many relationship
+    rooms: Array<Room>;
+
+    @OneToMany(() => UserNotification, (userNotification: UserNotification) => userNotification.user)
+    notifications: Array<Notification>;
+
+    @OneToMany(() => UserNotification, (userNotification) => userNotification.sentBy)
+    sentNotifications: Array<Notification>;
 }

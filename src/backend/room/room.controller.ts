@@ -61,11 +61,6 @@ export class RoomController {
         return await this.roomService.getRooms();
     }
 
-    // @Post('send-room-join-invitation')
-    // public async sendRoomJoinInvitationAction(@Body() createRoomDto: CreateRoomDto): Promise<CreateRoomDto> {
-    //     return await this.roomService.sendRoomJoinInvitation(createRoomDto);
-    // }
-
     //TODO
     // @Get('get-room/:id')
     // publicasync getRoomAction(

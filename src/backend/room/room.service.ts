@@ -46,7 +46,7 @@ export class RoomService {
                 hash: null,
             };
 
-            await this.roomUserService.addRoomUser(createRoomUserDto);
+            await this.roomUserService.addJoinRequest(createRoomUserDto);
 
             return {
                 success: true,
@@ -66,10 +66,6 @@ export class RoomService {
     public async getRooms(): Promise<Array<Room>> {
         return await this.roomRepository.find();
     }
-
-    // public async sendRoomJoinInvitation(): Promise<Array<Room>> {
-    //     return await this.roomRepository.find();
-    // }
 
     // TODO
     // getRoom(id: number) {

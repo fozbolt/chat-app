@@ -29,7 +29,7 @@ export class RoomUserService {
      * add function return type
      * @param createRoomUserDto
      */
-    public async addRoomUser(createRoomUserDto: CreateRoomUserDto): Promise<string | UserHashAndRoomUsersList> {
+    public async addJoinRequest(createRoomUserDto: CreateRoomUserDto): Promise<string | UserHashAndRoomUsersList> {
         let newRoomUser: RoomUser;
         let joinResponse: string | UserHashAndRoomUsersList;
 
@@ -186,7 +186,59 @@ export class RoomUserService {
         }
     }
 
-    async deleteRoomUser(id: number): Promise<string> {
+    //  in hold -> roles logic and schema should be refactored
+    public async sendRoomJoinInvitation(
+        createRoomUserDto: CreateRoomUserDto,
+    ): Promise<string | UserHashAndRoomUsersList> {
+        let newRoomUser: RoomUser;
+        let joinResponse: string | UserHashAndRoomUsersList;
+
+        //TODO: provjera da li je userAdmin uopce admin sobe ili je samo admin in general!
+
+        const requestAlreadySent = await this.getRoomUserByUserId(createRoomUserDto.userId, createRoomUserDto.roomId);
+
+        if (!requestAlreadySent) {
+            //probably not needed since possibility is low
+            let isHashUnique = false;
+
+            do {
+                // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+                const randomString = Math.random().toString(36).substring(2);
+                const hash = crypto.createHash('sha256').update(randomString).digest('hex');
+                const roomUser = await this.getRoomUserByHash(hash, createRoomUserDto.roomId);
+
+                if (!roomUser) {
+                    createRoomUserDto.hash = hash;
+
+                    try {
+                        const { userId, roomId, ...rest } = createRoomUserDto;
+
+                        newRoomUser = this.roomUserRepository.create({
+                            user: { userId },
+                            room: { roomId },
+                            ...rest,
+                        });
+
+                        const newRoomUserFromDb = await this.roomUserRepository.save(newRoomUser);
+
+                        joinResponse = { roomUserHash: newRoomUserFromDb?.hash };
+
+                        isHashUnique = true;
+                    } catch (e) {
+                        return e.message;
+                    }
+                }
+            } while (!isHashUnique);
+        } else {
+            // add better logs, separate each case
+            // currently for statuses approved, pending and forbidden
+            joinResponse = `Your room join request is already in status: ${requestAlreadySent.approvalStatus.toUpperCase()}`;
+        }
+
+        return joinResponse;
+    }
+
+    public async deleteRoomUser(id: number): Promise<string> {
         return await `This action removes a #${id} roomUser`;
     }
 }

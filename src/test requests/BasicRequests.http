@@ -55,7 +55,7 @@ GET {{hostUrl}}/room/get-rooms
 Authorization: Bearer {{accessToken}}
 
 ### ROOM JOIN REQUEST - B3
-POST {{hostUrl}}/roomUser/add-room-user/4
+POST {{hostUrl}}/roomUser/add-join-request/4
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -115,8 +115,9 @@ Authorization: Bearer {{accessToken}}
 # deprecated -> now global auth guard is used
 GET {{hostUrl}}/profile
 
-### SENT ROOM JOIN INVITATION
-POST {{hostUrl}}/room/send-room-join-invitation
+### SEND ROOM JOIN INVITATION
+# in hold -> roles logic and schema should be refactored
+POST {{hostUrl}}/roomUser/send-room-join-invitation/1
 
 {
 
