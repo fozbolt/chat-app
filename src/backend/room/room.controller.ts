@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { Message } from '@root/backend/message/entities/message.entity';
 import { Room } from '@root/backend/room/entities/room.entity';
+import { AddRoomResult } from '@root/backend/room/interfaces/room.interface';
 
 import { CreateMessageDto } from '../message/dto/createMessage.dto';
 import { MessageService } from '../message/message.service';
@@ -38,13 +39,21 @@ export class RoomController {
     // TODO napraviti da ne moze drugi logirani korisnik ulaziti na tude rute samo ako upise ovaj url
     // Endpoint: probably still weird route
     @Get('get-room-messages-after-join/room/:roomId/user/:userId') //na nivou messagea, promijeniti rutu da nije toliko hacky, slati userID u filteru
-    public async getRoomMessagesAfterJoinAction(@Param('roomId') roomId: number, @Param('userId') userId: number): Promise<Array<Message>> {
+    public async getRoomMessagesAfterJoinAction(
+        @Param('roomId') roomId: number,
+        @Param('userId') userId: number,
+    ): Promise<Array<Message>> {
         return await this.messageService.getRoomMessagesAfterJoin(roomId, userId);
     }
 
     @Post('add-room')
-    public async addRoomAction(@Body() createRoomDto: CreateRoomDto): Promise<CreateRoomDto> {
-        return await this.roomService.addRoom(createRoomDto);
+    public async addRoomAction(
+        @Body() createRoomDto: CreateRoomDto,
+        @Req()
+        req: { user: { userId: number } },
+    ): Promise<AddRoomResult> {
+        const userId = req.user.userId;
+        return await this.roomService.addRoom(createRoomDto, userId);
     }
 
     @Get('get-rooms')

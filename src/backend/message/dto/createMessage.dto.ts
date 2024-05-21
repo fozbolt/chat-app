@@ -29,7 +29,7 @@ export class CreateMessageDto {
     @IsDate()
     editedAt?: Date; // TODO, removing ? results in not recognizing this and upper two as optional
 
-    //todo: twice declared type, redundant
+    //todo: twice declared type, redundant?
     @IsOptional()
     @IsInt()
     isDeleted = 0;

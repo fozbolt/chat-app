@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '@root/backend/user/entities/user.entity';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 import { Message } from '../../message/entities/message.entity';
 import { RoomUser } from '../../roomUser/entities/roomUser.entity';
 
@@ -24,4 +26,8 @@ export class Room {
 
     @OneToMany(() => RoomUser, (roomUser) => roomUser.room)
     roomUser: Array<RoomUser>;
+
+    @ManyToOne(() => User, (user) => user.rooms)
+    @JoinColumn({ name: 'created_by' })
+    createdBy: User;
 }

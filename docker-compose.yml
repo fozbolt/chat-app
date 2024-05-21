@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:11.2
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_USERNAME}
+    ports:
+      - "3308:3308"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: nestjs-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
+    environment:
+      TYPEORM_CONNECTION: ${DB_TYPE}
+      TYPEORM_HOST: ${DB_TYPE}
+      TYPEORM_PORT: ${DB_PORT}
+      TYPEORM_USERNAME: ${DB_USERNAME}
+      TYPEORM_PASSWORD: ${DB_PASSWORD}
+      TYPEORM_DATABASE: ${DB_NAME}
+      TYPEORM_SYNCHRONIZE: ${DB_SYNCHRONIZE}
+      TYPEORM_ENTITIES: 'dist/**/*.entity.js'
+
+volumes:
+  mariadb_data:

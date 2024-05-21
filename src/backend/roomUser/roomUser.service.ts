@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserHashAndRoomUsersList } from '@root/backend/roomUser/interfaces/roomUser.interface';
 import crypto from 'crypto';
 import { Repository } from 'typeorm';
 
@@ -28,23 +29,10 @@ export class RoomUserService {
      * add function return type
      * @param createRoomUserDto
      */
-    public async addRoomUser(createRoomUserDto: CreateRoomUserDto): Promise<
-        | string
-        | {
-              roomUserHash: string;
-              roomUsers: Array<RoomUser>;
-          }
-    > {
+    public async addJoinRequest(createRoomUserDto: CreateRoomUserDto): Promise<string | UserHashAndRoomUsersList> {
         let newRoomUser: RoomUser;
-        let joinResponse:
-            | string
-            | {
-                  roomUserHash: string;
-                  roomUsers: Array<RoomUser>;
-              }; //add interface or improve logic
+        let joinResponse: string | UserHashAndRoomUsersList;
 
-        // TODO
-        //ovo ne radi jer je u db user_id i room_id null
         const requestAlreadySent = await this.getRoomUserByUserId(createRoomUserDto.userId, createRoomUserDto.roomId);
 
         if (!requestAlreadySent) {
@@ -64,8 +52,8 @@ export class RoomUserService {
                         const { userId, roomId, ...rest } = createRoomUserDto;
 
                         newRoomUser = this.roomUserRepository.create({
-                            user: { userId: userId },
-                            room: { roomId: roomId },
+                            user: { userId },
+                            room: { roomId },
                             ...rest,
                         });
 
@@ -100,11 +88,11 @@ export class RoomUserService {
         const approvedUsers = await this.roomUserRepository.find({
             where: { approvalStatus: ApprovalStatus.APPROVED, room: { roomId } },
         });
-        //TODO: also return userId here to successfully identify user and use it in B5 or in general
         return approvedUsers;
     }
 
     public async getRoomUserByUserId(roomId: Room['roomId'], userId: User['userId']): Promise<RoomUser | null> {
+        // TODO trenutno ne radi
         return await this.roomUserRepository.findOne({
             where: {
                 user: { userId },
@@ -161,8 +149,8 @@ export class RoomUserService {
                 messageText: '',
             };
 
-            const approvedUser = await this.userService.getUser(userId);
-            // const approvedUser: User = await this.userService.getUser(userId); // ili ovako? sto forceati
+            const approvedUser = await this.userService.getUserById(userId);
+            // const approvedUser: User = await this.userService.getUserById(userId); // ili ovako? sto forceati
 
             try {
                 if (approvedUser) {
@@ -198,7 +186,59 @@ export class RoomUserService {
         }
     }
 
-    async deleteRoomUser(id: number): Promise<string> {
+    //  in hold -> roles logic and schema should be refactored
+    public async sendRoomJoinInvitation(
+        createRoomUserDto: CreateRoomUserDto,
+    ): Promise<string | UserHashAndRoomUsersList> {
+        let newRoomUser: RoomUser;
+        let joinResponse: string | UserHashAndRoomUsersList;
+
+        //TODO: provjera da li je userAdmin uopce admin sobe ili je samo admin in general!
+
+        const requestAlreadySent = await this.getRoomUserByUserId(createRoomUserDto.userId, createRoomUserDto.roomId);
+
+        if (!requestAlreadySent) {
+            //probably not needed since possibility is low
+            let isHashUnique = false;
+
+            do {
+                // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+                const randomString = Math.random().toString(36).substring(2);
+                const hash = crypto.createHash('sha256').update(randomString).digest('hex');
+                const roomUser = await this.getRoomUserByHash(hash, createRoomUserDto.roomId);
+
+                if (!roomUser) {
+                    createRoomUserDto.hash = hash;
+
+                    try {
+                        const { userId, roomId, ...rest } = createRoomUserDto;
+
+                        newRoomUser = this.roomUserRepository.create({
+                            user: { userId },
+                            room: { roomId },
+                            ...rest,
+                        });
+
+                        const newRoomUserFromDb = await this.roomUserRepository.save(newRoomUser);
+
+                        joinResponse = { roomUserHash: newRoomUserFromDb?.hash };
+
+                        isHashUnique = true;
+                    } catch (e) {
+                        return e.message;
+                    }
+                }
+            } while (!isHashUnique);
+        } else {
+            // add better logs, separate each case
+            // currently for statuses approved, pending and forbidden
+            joinResponse = `Your room join request is already in status: ${requestAlreadySent.approvalStatus.toUpperCase()}`;
+        }
+
+        return joinResponse;
+    }
+
+    public async deleteRoomUser(id: number): Promise<string> {
         return await `This action removes a #${id} roomUser`;
     }
 }

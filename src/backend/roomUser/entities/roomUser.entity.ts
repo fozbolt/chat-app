@@ -21,6 +21,10 @@ export class RoomUser {
     @JoinColumn({ name: 'user_id' })
     user: User;
 
+    @ManyToOne(() => User, { nullable: true })
+    @JoinColumn({ name: 'updated_by' })
+    updatedBy: User;
+
     @ManyToOne(() => Room, (room) => room.roomUser)
     @JoinColumn({ name: 'room_id' })
     room: Room;
@@ -35,10 +39,6 @@ export class RoomUser {
 
     @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
     updatedAt: Date;
-
-    @ManyToOne(() => User, { nullable: true })
-    @JoinColumn({ name: 'updated_by' })
-    updatedBy: User;
 
     @Column({ name: 'left_at', nullable: true })
     leftAt: Date;

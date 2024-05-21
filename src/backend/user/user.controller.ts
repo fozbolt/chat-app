@@ -1,4 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Public, Roles } from '@root/backend/auth/auth.helper';
+import { Role } from '@root/backend/auth/consts';
 import { User } from '@root/backend/user/entities/user.entity';
 
 import { CreateUserDto } from './dto/createUser.dto';
@@ -8,21 +10,23 @@ import { UserService } from './user.service';
 export class UserController {
     public constructor(private readonly userService: UserService) {}
 
+    @Public()
     @Post('add-user')
     public async addUserAction(@Body() createUserDto: CreateUserDto): Promise<string> {
         return await this.userService.addUser(createUserDto);
     }
 
     @Get('get-users')
-    //dodati tu i dolje onda read dto?
+    //TODO dodati tu i dolje onda read dto?
     public async getUsersAction(): Promise<Array<User>> {
         return await this.userService.getUsers();
     }
 
     // these are not implemented yet
-    @Get('getUser/:userId')
+    @Get('getUserById/:userId')
+    @Roles(Role.Admin)
     public async getUserAction(@Param('userId') userId: number): Promise<User> {
-        return await this.userService.getUser(userId);
+        return await this.userService.getUserById(userId);
     }
 
     // TODO

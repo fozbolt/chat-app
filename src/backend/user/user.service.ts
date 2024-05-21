@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/createUser.dto';
@@ -14,26 +15,38 @@ export class UserService {
     ) {}
 
     public async addUser(createUserDto: CreateUserDto): Promise<string> {
-        //how come i dont need async-await-> because its fast as its local?
+        const password = createUserDto.password;
+        if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
+            return 'Password must contain at least eight characters, including at least one number and both lower and uppercase letters and at least one special character';
+        }
+
+        const saltRounds = 10;
+        createUserDto.password = await bcrypt.hash(password, saltRounds);
+
         try {
             await this.userRepository.save(createUserDto);
         } catch (err) {
-            // Check if the error is due to unique username constraint
             if (err.code === 'ER_DUP_ENTRY') {
-                return 'Username already exists';
+                throw new ConflictException('Username already exists');
             }
-            return 'Error while creating user';
+            throw new InternalServerErrorException('Error while creating user');
         }
-        return 'created';
+
+        return 'created ';
     }
 
     public async getUsers(): Promise<Array<User>> {
         return await this.userRepository.find();
     }
 
-    public async getUser(userId: User['userId']): Promise<User> {
+    public async getUserById(userId: User['userId']): Promise<User> {
         //add checks or messages if not found and security
         return await this.userRepository.findOneBy({ userId });
+    }
+
+    public async getUserByUsername(username: User['username']): Promise<User> {
+        //add checks or messages if not found and security
+        return await this.userRepository.findOneBy({ username });
     }
 
     // TODO

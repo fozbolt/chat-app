@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-    public getHello(): string {
-        return 'Chat app says hello';
+    public postLoginGreeting(username: string): string {
+        return `Hello ${username}`;
+    }
+
+    public homepageGreeting(): string {
+        return 'chat app says hello';
     }
 }

@@ -211,7 +211,7 @@ export class InitDatabaseMigration1622107764557 implements MigrationInterface {
 
         await queryRunner.query(`
             ALTER TABLE room
-                ADD CONSTRAINT fk_room_created_by FOREIGN KEY (user_id) REFERENCES user (user_id);
+                ADD CONSTRAINT fk_room_user_id FOREIGN KEY (user_id) REFERENCES user (user_id);
         `);
 
         await queryRunner.query(`
